@@ -1,0 +1,449 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#101828">
+<title>Daily Stories | SpeakQuest</title>
+<style>
+:root{
+  --bg:#101828;--panel:#1D2939;--panel2:#243449;--teal:#2DD4BF;
+  --purple:#A78BFA;--orange:#FB923C;--text:#F9FAFB;--muted:#CBD5E1;
+  --line:rgba(203,213,225,.17);--danger:#FDA4AF;--good:#6EE7B7;
+}
+*{box-sizing:border-box}
+body{margin:0;background:radial-gradient(ellipse at top,#1a2c43 0%,var(--bg) 58%);color:var(--text);font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;line-height:1.5}
+button,select,textarea{font:inherit}
+button{cursor:pointer}
+button:disabled{opacity:.45;cursor:not-allowed;transform:none!important;filter:none!important}
+button:focus-visible,select:focus-visible,textarea:focus-visible{outline:3px solid var(--orange);outline-offset:3px}
+.shell{max-width:900px;margin:0 auto;padding:20px 16px 44px}
+header{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:8px 0 22px;border-bottom:1px solid var(--line)}
+.brand{display:flex;align-items:center;gap:10px;font-weight:900;letter-spacing:.08em}
+.logo{width:38px;height:38px;border-radius:12px;display:grid;place-items:center;background:linear-gradient(135deg,var(--teal),var(--purple));color:#101828;font-size:22px}
+.brand small{display:block;color:var(--muted);font-size:10px;letter-spacing:.18em;font-weight:700}
+.top-tag{font-size:12px;color:var(--teal);border:1px solid rgba(45,212,191,.35);border-radius:999px;padding:6px 10px}
+.hero{padding:28px 0 18px}
+.eyebrow{color:var(--teal);font-size:12px;font-weight:900;letter-spacing:.18em;text-transform:uppercase}
+h1{font-size:clamp(32px,7vw,52px);line-height:1.05;letter-spacing:-.04em;margin:8px 0 10px}
+h1 span{color:var(--teal)}
+.lead{color:var(--muted);max-width:650px;margin:0}
+.notice{margin-top:16px;padding:12px 14px;border-radius:14px;background:rgba(251,146,60,.09);border:1px solid rgba(251,146,60,.3);color:#FED7AA;font-size:14px}
+.notice-sub{display:block;margin-top:8px;color:var(--muted);font-size:13px}
+.panel{background:rgba(29,41,57,.92);border:1px solid var(--line);border-radius:22px;padding:clamp(16px,4vw,26px);box-shadow:0 18px 50px rgba(0,0,0,.18);margin-top:18px}
+.panel-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:16px}
+h2{font-size:21px;margin:0 0 4px}
+.sub{color:var(--muted);font-size:14px;margin:0}
+.badge{white-space:nowrap;background:rgba(167,139,250,.15);color:#D8CCFF;border-radius:999px;padding:5px 9px;font-size:11px;font-weight:800}
+label{display:block;color:var(--muted);font-size:13px;font-weight:700;margin:0 0 7px}
+select{width:100%;background:#101828;color:var(--text);border:1px solid var(--line);border-radius:12px;padding:13px}
+textarea.answer{width:100%;resize:vertical;background:#1D2939;color:var(--text);border:1px solid rgba(203,213,225,.2);border-radius:12px;padding:12px}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.btn{border:0;border-radius:13px;padding:12px 16px;font-weight:850;transition:transform .15s,filter .15s}
+.btn:hover{filter:brightness(1.08);transform:translateY(-1px)}
+.primary{background:var(--teal);color:#10202B}
+.secondary{background:#334155;color:var(--text);border:1px solid var(--line)}
+.purple{background:var(--purple);color:#19152C}
+.orange{background:var(--orange);color:#2B1706}
+.buttons{display:flex;flex-wrap:wrap;gap:10px;margin-top:15px}
+.mission{background:linear-gradient(130deg,rgba(45,212,191,.12),rgba(167,139,250,.12));border:1px solid rgba(45,212,191,.25);border-radius:18px;padding:20px;margin-top:16px}
+.mission-title{font-size:11px;letter-spacing:.16em;font-weight:900;color:var(--teal)}
+.prompt{font-size:clamp(22px,5vw,31px);font-weight:850;line-height:1.2;margin:9px 0}
+.mission-note{color:var(--muted);font-size:14px;margin:0}
+.support-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px}
+.support{border:1px solid var(--line);background:rgba(16,24,40,.45);border-radius:14px;padding:14px}
+.support h3{font-size:13px;margin:0 0 8px;color:var(--purple)}
+.support ul{padding-left:18px;margin:0;color:var(--muted);font-size:14px}
+.support li+li{margin-top:5px}
+.speechbox{border:1px solid var(--line);border-radius:15px;background:#101828;padding:15px;margin-top:15px}
+.speechtop{display:flex;justify-content:space-between;gap:8px;align-items:center}
+.status{font-size:12px;color:var(--muted)}
+.status::before{content:"";display:inline-block;width:8px;height:8px;background:#64748B;border-radius:50%;margin-right:7px}
+.status.live{color:var(--teal)}.status.live::before{background:var(--teal);box-shadow:0 0 0 4px rgba(45,212,191,.13)}
+.transcript{min-height:60px;margin:12px 0;color:var(--text);white-space:pre-wrap;overflow-wrap:anywhere}
+.placeholder{color:#8493A7}
+.feedback{border-radius:14px;padding:13px 15px;margin-top:12px;background:rgba(167,139,250,.1);border:1px solid rgba(167,139,250,.25);color:#E9E2FF;font-size:14px;white-space:pre-wrap;overflow-wrap:anywhere}
+.feedback.good{background:rgba(110,231,183,.08);border-color:rgba(110,231,183,.25);color:#C9FBE5}
+.feedback.warn{background:rgba(251,146,60,.08);border-color:rgba(251,146,60,.25);color:#FED7AA}
+.progress{display:flex;gap:7px;margin:12px 0 0}
+.dot{height:5px;flex:1;background:#344256;border-radius:9px}.dot.done{background:var(--teal)}
+.checklist{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
+.check{display:flex;gap:9px;align-items:flex-start;background:#101828;border:1px solid var(--line);padding:11px;border-radius:12px;font-size:13px;color:var(--muted)}
+.check input{accent-color:var(--teal);margin-top:4px}
+footer{text-align:center;color:#93A4B8;font-size:12px;padding-top:24px}
+.hidden{display:none!important}
+@media(max-width:560px){
+ .shell{padding:14px 12px 30px}.top-tag{font-size:10px}.row,.support-grid,.checklist{grid-template-columns:1fr}
+ .panel{border-radius:18px}.panel-head{flex-direction:column}.buttons .btn{flex:1 1 140px}
+}
+</style>
+</head>
+<body>
+<div class="shell">
+<header>
+  <div class="brand"><div class="logo">S</div><div>SPEAKQUEST<small>YOUR VOICE. YOUR JOURNEY.</small></div></div>
+  <div class="top-tag">SPEAKING ARENA</div>
+</header>
+
+<section class="hero">
+  <div class="eyebrow">CHALLENGE 03 · STORYTELLING</div>
+  <h1>Daily <span>Stories</span></h1>
+  <p class="lead">Build your story, one idea at a time. Choose a topic, speak in English, and follow the next question.</p>
+  <div class="notice hidden" id="browserNote" role="note">
+    ⚠️ <strong>Brave detected.</strong> Brave blocks the Google speech service that voice recognition needs, so the microphone may fail with a network error. For voice, open this page in <strong>Google Chrome</strong> or <strong>Microsoft Edge</strong>. You can always type your answer instead.
+  </div>
+  <div class="notice hidden" id="embedNote" role="note">
+    🎙️ <strong>Microphone blocked here.</strong> <span id="embedText">This game is running inside another web page (for example Google Sites), and the browser does not allow the microphone in that situation.</span>
+    <div class="buttons" style="margin-top:10px">
+      <a class="btn primary hidden" id="openFull" href="#" target="_blank" rel="noopener" style="text-decoration:none;display:inline-block">↗ Open in a new tab to use your voice</a>
+    </div>
+    <span class="notice-sub">You can still type your answers in the box below.</span>
+  </div>
+</section>
+
+<section class="panel" aria-labelledby="setupTitle">
+ <div class="panel-head">
+  <div><h2 id="setupTitle">01 / Choose your mission</h2><p class="sub">Pick a topic or let SpeakQuest choose one for you.</p></div>
+  <span class="badge">A2–B1</span>
+ </div>
+ <label for="topic">Story topic</label>
+ <div class="row">
+  <select id="topic">
+   <option value="weekend">My last weekend</option>
+   <option value="routine">My daily routine</option>
+   <option value="celebration">A special celebration</option>
+   <option value="memory">A memorable day</option>
+   <option value="future">My future plans</option>
+   <option value="school">A day at school</option>
+   <option value="hobby">My favorite hobby</option>
+   <option value="funny">A funny experience</option>
+  </select>
+  <button class="btn secondary" id="randomTopic" type="button">🎲 Random topic</button>
+ </div>
+ <div class="mission">
+  <div class="mission-title">YOUR MISSION</div>
+  <div class="prompt" id="prompt">Tell me about your last weekend.</div>
+  <p class="mission-note" id="missionNote">Try to explain what you did, who you were with, and how you felt.</p>
+ </div>
+ <div class="support-grid">
+  <div class="support"><h3>NEED A PLAN?</h3><ul id="guide"></ul></div>
+  <div class="support"><h3>USEFUL EXPRESSIONS</h3><ul id="phrases"></ul></div>
+ </div>
+ <div class="buttons">
+  <button class="btn purple" id="listenBtn" type="button">🔊 Listen to the question</button>
+  <button class="btn secondary" id="hintBtn" type="button">💡 Show a hint</button>
+ </div>
+ <div class="feedback hidden" id="hint"></div>
+</section>
+
+<section class="panel" aria-labelledby="speakTitle">
+ <div class="panel-head">
+  <div><h2 id="speakTitle">02 / Tell your story</h2><p class="sub">Speak in English. Your words appear below and you can edit them before continuing.</p></div>
+  <span class="badge">YOUR TURN</span>
+ </div>
+ <div class="buttons" style="margin-top:0">
+  <button class="btn primary" id="startBtn" type="button">🎙️ Start speaking</button>
+  <button class="btn orange hidden" id="stopBtn" type="button">■ Stop</button>
+  <button class="btn secondary" id="clearBtn" type="button">Clear answer</button>
+ </div>
+ <div class="speechbox">
+  <div class="speechtop"><strong>Live voice</strong><span class="status" id="status">Ready</span></div>
+  <div class="transcript placeholder" id="transcript">What you say will appear here while you speak.</div>
+  <label for="manualAnswer">Your answer (edit it or type it yourself)</label>
+  <textarea class="answer" id="manualAnswer" rows="4" placeholder="For example: Last weekend, I visited my grandmother..."></textarea>
+ </div>
+ <div class="buttons">
+  <button class="btn primary" id="continueBtn" type="button">Continue my story →</button>
+  <button class="btn secondary" id="restartBtn" type="button">↻ New round</button>
+ </div>
+ <div class="progress" aria-label="Story progress"><span class="dot done"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span></div>
+ <div class="feedback hidden" id="feedback" role="status"></div>
+</section>
+
+<section class="panel" aria-labelledby="finishTitle">
+ <div class="panel-head"><div><h2 id="finishTitle">03 / Quest check</h2><p class="sub">Before finishing, reflect on your speaking practice.</p></div></div>
+ <div class="checklist">
+  <label class="check"><input type="checkbox"> I spoke in English.</label>
+  <label class="check"><input type="checkbox"> I added details to my story.</label>
+  <label class="check"><input type="checkbox"> I used a connector (first, then, finally…).</label>
+  <label class="check"><input type="checkbox"> I tried to speak clearly.</label>
+ </div>
+ <div class="buttons"><button class="btn purple" id="finishBtn" type="button">🏁 Complete challenge</button></div>
+ <div class="feedback hidden" id="finishFeedback" role="status"></div>
+</section>
+
+<footer>SpeakQuest · Practice makes progress. Keep speaking!</footer>
+</div>
+<script>
+(function(){
+ "use strict";
+ const $=id=>document.getElementById(id);
+ const MAX_ANSWERS=4; // 1 initial answer + 3 follow-up answers
+
+ /* ---------- EMBED SETTINGS ----------
+    After hosting this file on its own web address (e.g. GitHub Pages), paste that address here.
+    Inside Google Sites the microphone is blocked, so students get a button that opens the game in a new tab. */
+ const FULL_PAGE_URL = ""; // example: "https://yourname.github.io/speakquest/daily-stories.html"
+
+ /* Is the page inside another page (iframe) that blocks the microphone? */
+ let inIframe=false;
+ try{inIframe=window.self!==window.top;}catch(e){inIframe=true;}
+ const policy=document.permissionsPolicy||document.featurePolicy;
+ let micBlockedByFrame=false;
+ try{
+  if(policy&&typeof policy.allowsFeature==="function")micBlockedByFrame=inIframe&&!policy.allowsFeature("microphone");
+  else micBlockedByFrame=inIframe; // cannot check: assume blocked and let the student try
+ }catch(e){micBlockedByFrame=inIframe;}
+
+ /* ---------- TOPICS ---------- */
+ const topics = {
+  weekend:{prompt:"Tell me about your last weekend.",note:"Explain what you did, who you were with, and how you felt.",guide:["What did you do first?","Who were you with?","How did you feel?"],phrases:["Last weekend, I…","After that, I…","I felt… because…"],hint:"Try to use the past tense: went, saw, played, visited, watched.",plan:["who","where","feeling","next","why"]},
+  routine:{prompt:"Describe your daily routine.",note:"Talk about your morning, afternoon, and evening.",guide:["What do you do in the morning?","What do you do after school or work?","What do you do at night?"],phrases:["First, I…","Then, I usually…","In the evening, I…"],hint:"Use the present simple: I wake up, I go, I study, I have.",plan:["time","next","feeling","why"]},
+  celebration:{prompt:"Tell me about a special celebration.",note:"Describe the event, the people, and one thing you remember.",guide:["What were you celebrating?","Who was there?","What was the best part?"],phrases:["We celebrated…","Everyone was…","My favorite part was…"],hint:"Try adding one detail about the food, music, people, or place.",plan:["who","where","feeling","next","why"]},
+  memory:{prompt:"Describe a memorable day in your life.",note:"Choose a day you remember and explain why it was important.",guide:["Where were you?","What happened?","Why do you remember it?"],phrases:["I remember when…","It was special because…","I will never forget…"],hint:"Tell the story in order: beginning, middle, and end.",plan:["where","who","feeling","why","next"]},
+  future:{prompt:"Talk about your future plans.",note:"Describe a goal and one step you can take to reach it.",guide:["What would you like to do?","Why is it important?","What will you do first?"],phrases:["In the future, I want to…","I hope to…","My first step will be…"],hint:"Use 'I want to…', 'I would like to…', or 'I'm going to…'.",plan:["why","first","when","who"]},
+  school:{prompt:"Tell me about a day at school.",note:"Describe a class, an activity, or something that happened.",guide:["What classes did you have?","What did you enjoy?","What happened with your friends?"],phrases:["At school, we…","My favorite class was…","After class, I…"],hint:"Use details: subject, place, people, and what happened.",plan:["who","feeling","next","why"]},
+  hobby:{prompt:"Talk about your favorite hobby.",note:"Explain what you enjoy and how you got interested in it.",guide:["What is your hobby?","When do you do it?","Why do you like it?"],phrases:["My favorite hobby is…","I started…","I enjoy it because…"],hint:"Try to explain why the hobby matters to you, not just its name.",plan:["start","when","why","who"]},
+  funny:{prompt:"Tell me about a funny experience.",note:"Describe something funny that happened and how people reacted.",guide:["Where did it happen?","What happened?","How did everyone react?"],phrases:["One day…","Suddenly…","We couldn't stop laughing because…"],hint:"Use past-tense verbs and explain what made the moment funny.",plan:["where","who","next","feeling","why"]}
+ };
+
+ /* ---------- FOLLOW-UP QUESTIONS ----------
+    "re" = the question is considered ALREADY ANSWERED if the story matches it.
+    Word boundaries (\b) avoid false matches like "good" in "goodbye". */
+ const Q = {
+  who:    {q:"Who were you with?",                       re:/\b(with|friends?|family|mother|mom|mum|father|dad|sister|brother|cousins?|grandmother|grandfather|grandma|grandpa|aunt|uncle|teacher|classmates?|teammates?|neighbou?rs?|girlfriend|boyfriend|partner|alone)\b/i, starters:"I was with… / My friends and I…"},
+  where:  {q:"Where did it happen?",                     re:/\b(park|home|house|school|beach|city|town|stadium|field|restaurant|church|mall|store|shop|library|gym|court|village|river|mountain|farm|street|club|cinema|office|classroom|garden)\b|\b(at|in)\s+(the|my|a|our)\b/i, starters:"It happened in… / We were at…"},
+  when:   {q:"When do you want to do it?",               re:/\b(tomorrow|next\s+(week|month|year)|soon|someday|one day|in\s+\d+\s+(days?|weeks?|months?|years?)|this\s+(year|summer|winter))\b/i, starters:"I want to do it… / Next year, I will…"},
+  time:   {q:"What time do you usually start your day?", re:/\b\d{1,2}\s?(am|pm|o'?clock)\b|\b(morning|afternoon|evening|night)\b/i, starters:"I usually wake up at… / In the morning, I…"},
+  feeling:{q:"How did you feel about it?",               re:/\b(felt|feel|feeling|happy|excited|tired|nervous|proud|sad|amazing|scared|worried|enjoyed|loved|fun|funny|boring|relaxed|angry|surprised)\b/i, starters:"I felt… / I was very…"},
+  why:    {q:"Why was it special for you?",              re:/\b(because|so that|since|reason)\b/i, starters:"It was special because… / I like it because…"},
+  next:   {q:"What happened next?",                      re:/\b(then|after that|afterwards|next|finally|later|in the end|at the end)\b/i, starters:"After that… / Then, we… / Finally…"},
+  first:  {q:"What will be your first step?",            re:/\b(first step|start by|begin by|first,? i)\b/i, starters:"My first step will be… / I'm going to start by…"},
+  start:  {q:"How did you start this hobby?",            re:/\b(started|began|since|years? ago|when i was)\b/i, starters:"I started when… / My friend showed me…"}
+ };
+
+ /* Activity-specific questions: asked first when the story mentions them */
+ const ACTIVITIES = [
+  {id:"act_sport", re:/\b(football|soccer|basketball|volleyball|tennis|baseball|match|game|games|played|play|playing|sport|sports|swim|swimming|running)\b/i, q:"What was the best moment while you were playing?", starters:"The best moment was when… / I scored…"},
+  {id:"act_food",  re:/\b(ate|eat|food|dinner|lunch|breakfast|cook|cooked|pizza|cake|meal|restaurant)\b/i, q:"What was your favorite food that day?", starters:"My favorite food was… / It tasted…"},
+  {id:"act_movie", re:/\b(movie|movies|film|series|cinema|watched)\b/i, q:"What was it about?", starters:"It was about… / The main character…"},
+  {id:"act_music", re:/\b(music|song|songs|sing|sang|concert|guitar|piano|dance|danced)\b/i, q:"What kind of music or songs did you enjoy?", starters:"I enjoyed… / My favorite song was…"},
+  {id:"act_trip",  re:/\b(trip|travel|traveled|travelled|visited|visit|journey|vacation|holiday)\b/i, q:"What was the most interesting place you saw?", starters:"The most interesting place was… / I saw…"},
+  {id:"act_class", re:/\b(class|classes|teacher|homework|exam|test|lesson|subject|math|science|history)\b/i, q:"What was the most interesting part of the class?", starters:"The most interesting part was… / I learned…"}
+ ];
+
+ /* ---------- STATE ---------- */
+ let answers=[];            // confirmed answers of the story
+ let asked=new Set();       // follow-up ids already asked
+ let storyDone=false;
+
+ /* speech state */
+ let recognition=null, wantListening=false, baseText="", sessionFinal="", interim="";
+ let lastStart=0, quickRestarts=0, isBrave=false;
+ const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+
+ /* ---------- HELPERS ---------- */
+ const escapeHtml=s=>s.replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+ const join=(...p)=>p.map(s=>(s||"").trim()).filter(Boolean).join(" ");
+ const wordCount=t=>t.trim().split(/\s+/).filter(Boolean).length;
+ function setStatus(text,live=false){$("status").textContent=text;$("status").classList.toggle("live",live);}
+ function showFeedback(text,type=""){const f=$("feedback");f.textContent=text;f.className="feedback"+(type?" "+type:"");}
+ function speak(text,rate=.9){
+  if(!("speechSynthesis" in window))return false;
+  window.speechSynthesis.cancel();
+  const u=new SpeechSynthesisUtterance(text);u.lang="en-US";u.rate=rate;window.speechSynthesis.speak(u);return true;
+ }
+ function stopSpeaking(){if("speechSynthesis" in window)window.speechSynthesis.cancel();}
+ function updateProgress(){
+  document.querySelectorAll(".dot").forEach((d,i)=>d.classList.toggle("done",i<=Math.min(answers.length,3)));
+ }
+
+ /* ---------- EMBED NOTICE ---------- */
+ if(micBlockedByFrame){
+  $("embedNote").classList.remove("hidden");
+  if(FULL_PAGE_URL){const a=$("openFull");a.href=FULL_PAGE_URL;a.classList.remove("hidden");}
+  else $("embedText").textContent+=" Ask your teacher for the direct link and open it in Chrome or Edge.";
+ }
+
+ /* ---------- BRAVE DETECTION ---------- */
+ if(navigator.brave && typeof navigator.brave.isBrave==="function"){
+  navigator.brave.isBrave().then(v=>{isBrave=!!v;if(v)$("browserNote").classList.remove("hidden");}).catch(()=>{});
+ }
+
+ /* ---------- TOPIC RENDERING ---------- */
+ const topicSelect=$("topic");
+ function renderTopic(key){
+  const t=topics[key];
+  $("prompt").textContent=t.prompt;$("missionNote").textContent=t.note;
+  $("guide").innerHTML=t.guide.map(x=>"<li>"+escapeHtml(x)+"</li>").join("");
+  $("phrases").innerHTML=t.phrases.map(x=>"<li>"+escapeHtml(x)+"</li>").join("");
+  $("hint").textContent=t.hint;$("hint").classList.add("hidden");
+  answers=[];asked=new Set();storyDone=false;
+  $("continueBtn").disabled=false;
+  $("feedback").classList.add("hidden");
+  updateProgress();
+ }
+ topicSelect.addEventListener("change",()=>{hardStopListening();stopSpeaking();clearAnswer();renderTopic(topicSelect.value);});
+ $("randomTopic").addEventListener("click",()=>{
+  const keys=Object.keys(topics).filter(k=>k!==topicSelect.value);
+  topicSelect.value=keys[Math.floor(Math.random()*keys.length)];
+  hardStopListening();stopSpeaking();clearAnswer();renderTopic(topicSelect.value);
+ });
+ $("hintBtn").addEventListener("click",()=>$("hint").classList.toggle("hidden"));
+ $("listenBtn").addEventListener("click",()=>{
+  if(!speak($("prompt").textContent,.88))showFeedback("Voice playback is not supported in this browser. Read the question on screen instead.","warn");
+ });
+
+ /* ---------- TRANSCRIPT ---------- */
+ function renderLive(){
+  const text=join(sessionFinal,interim);
+  const box=$("transcript");
+  box.textContent=text||(wantListening?"Listening… start speaking.":"What you say will appear here while you speak.");
+  box.classList.toggle("placeholder",!text);
+ }
+ // The textarea is the single source of truth for the answer.
+ function syncTextarea(){$("manualAnswer").value=join(baseText,sessionFinal,interim);}
+ function clearAnswer(){
+  sessionFinal="";interim="";baseText="";$("manualAnswer").value="";renderLive();
+ }
+
+ /* ---------- SPEECH RECOGNITION ---------- */
+ function uiListening(on){
+  $("startBtn").classList.toggle("hidden",on);
+  $("stopBtn").classList.toggle("hidden",!on);
+ }
+ function hardStopListening(){
+  wantListening=false;
+  if(recognition){try{recognition.stop()}catch(e){}}
+  uiListening(false);setStatus("Ready");
+ }
+ function failListening(msg){
+  wantListening=false;uiListening(false);setStatus("Recognition issue");
+  showFeedback(msg,"warn");
+  $("manualAnswer").focus();
+ }
+ function startRecognition(){
+  recognition=new SR();
+  recognition.lang="en-US";recognition.interimResults=true;recognition.continuous=true;
+  recognition.onstart=()=>{setStatus("Listening…",true);uiListening(true);renderLive();};
+  recognition.onresult=e=>{
+   interim="";
+   for(let i=e.resultIndex;i<e.results.length;i++){
+    const piece=e.results[i][0].transcript;
+    if(e.results[i].isFinal)sessionFinal=join(sessionFinal,piece);else interim=join(interim,piece);
+   }
+   syncTextarea();renderLive();
+  };
+  recognition.onerror=e=>{
+   if(e.error==="no-speech"){setStatus("I didn't hear anything…",true);return;}
+   if(e.error==="aborted")return;
+   if(e.error==="network"){
+    failListening(isBrave
+     ?"Brave blocks the Google speech service used for voice recognition, so it cannot connect. Open this page in Google Chrome or Microsoft Edge to use your voice, or type your answer below."
+     :"Voice recognition could not reach the speech service. Check your internet connection (or try Chrome/Edge), or type your answer below.");
+    return;
+   }
+   if(e.error==="not-allowed"||e.error==="service-not-allowed"){
+    if(micBlockedByFrame){
+     failListening("The microphone is blocked because this game is inside another web page. "+(FULL_PAGE_URL?"Use the “Open in a new tab” button above to speak, or type your answer.":"Open the game from its direct link in Chrome or Edge to speak, or type your answer."));return;
+    }
+    failListening("Microphone permission was denied or blocked. Allow microphone access in your browser settings, then try again—or type your answer.");return;
+   }
+   if(e.error==="audio-capture"){failListening("No microphone was found. Connect one and try again, or type your answer.");return;}
+   failListening("Voice recognition stopped ("+e.error+"). You can type your answer instead.");
+  };
+  recognition.onend=()=>{
+   // Chrome ends the session after some silence: restart automatically while the user wants to keep speaking.
+   if(wantListening){
+    quickRestarts=(Date.now()-lastStart<800)?quickRestarts+1:0;
+    if(quickRestarts>3){failListening("Voice recognition keeps stopping. Please type your answer instead.");return;}
+    baseText=$("manualAnswer").value.trim();sessionFinal="";interim="";
+    try{lastStart=Date.now();recognition.start();return;}catch(err){wantListening=false;}
+   }
+   interim="";renderLive();uiListening(false);setStatus("Ready");
+  };
+  lastStart=Date.now();
+  recognition.start();
+ }
+ $("startBtn").addEventListener("click",()=>{
+  if(!SR){
+   setStatus("Voice recognition unavailable");
+   showFeedback("This browser does not provide speech recognition. Type your answer in the box, then select “Continue my story”. Chrome or Edge work best for voice.","warn");
+   $("manualAnswer").focus();return;
+  }
+  stopSpeaking();
+  wantListening=true;quickRestarts=0;
+  baseText=$("manualAnswer").value.trim();sessionFinal="";interim="";
+  $("feedback").classList.add("hidden");
+  try{startRecognition();}
+  catch(err){failListening("The microphone could not start in this page. Check browser permissions, or type your answer instead.");}
+ });
+ $("stopBtn").addEventListener("click",()=>{hardStopListening();});
+ $("clearBtn").addEventListener("click",()=>{hardStopListening();clearAnswer();$("feedback").classList.add("hidden");});
+ // If the user types while not listening, keep the base in sync
+ $("manualAnswer").addEventListener("input",()=>{if(!wantListening){baseText=$("manualAnswer").value;sessionFinal="";interim="";}});
+
+ /* ---------- FOLLOW-UP LOGIC ---------- */
+ function chooseFollowup(){
+  const story=answers.join(" ");
+  const plan=topics[topicSelect.value].plan;
+  const candidates=[];
+  // 1) Questions about what the user actually mentioned (sports, food, movies…)
+  ACTIVITIES.forEach(a=>{if(a.re.test(story)&&!asked.has(a.id))candidates.push({id:a.id,q:a.q,starters:a.starters});});
+  // 2) Missing story elements for this topic (skip what the user already said)
+  plan.forEach(id=>{if(!asked.has(id)&&!Q[id].re.test(story))candidates.push({id:id,q:Q[id].q,starters:Q[id].starters});});
+  if(candidates.length)return candidates[0];
+  return {id:"detail"+answers.length,q:"Can you add one more interesting detail?",starters:"Also… / Something else I remember is…"};
+ }
+ function praise(text){
+  if(Q.next.re.test(text))return "Great use of sequence words! ";
+  if(Q.why.re.test(text))return "Nice, you explained a reason! ";
+  if(wordCount(text)>=20)return "Excellent, that was a detailed answer! ";
+  return "Nice effort! ";
+ }
+ function finishStory(){
+  storyDone=true;
+  $("continueBtn").disabled=true;
+  $("prompt").textContent="Your story is complete! 🎉";
+  $("missionNote").textContent="Read your story aloud once more, or start a new round.";
+  $("hint").classList.add("hidden");
+  updateProgress();
+  showFeedback("Well done! Here is your story:\n\n"+answers.join("\n\n")+"\n\nThis activity uses simple programmed rules. It does not grade grammar or pronunciation automatically.","good");
+ }
+ $("continueBtn").addEventListener("click",()=>{
+  if(storyDone)return;
+  hardStopListening();
+  const answer=$("manualAnswer").value.trim();
+  if(!answer){showFeedback("Tell your story first: use the microphone, or type a few sentences in the answer box.","warn");return;}
+  if(wordCount(answer)<5){showFeedback("Try a longer answer: say at least one complete sentence (5 words or more).","warn");return;}
+  answers.push(answer);
+  clearAnswer();
+  updateProgress();
+  if(answers.length>=MAX_ANSWERS){finishStory();return;}
+  const f=chooseFollowup();
+  asked.add(f.id);
+  $("prompt").textContent=f.q;
+  $("missionNote").textContent="Answer the new question, add details, and keep your story going.";
+  $("hint").textContent="Useful starters: "+f.starters;
+  $("hint").classList.remove("hidden");
+  showFeedback(praise(answer)+"Next question: "+f.q,"good");
+  speak(f.q);
+ });
+ $("restartBtn").addEventListener("click",()=>{
+  hardStopListening();stopSpeaking();clearAnswer();renderTopic(topicSelect.value);setStatus("Ready");
+ });
+
+ /* ---------- FINISH ---------- */
+ $("finishBtn").addEventListener("click",()=>{
+  const checked=document.querySelectorAll(".check input:checked").length;
+  const f=$("finishFeedback");
+  f.textContent=checked===4?"Challenge completed! You reflected on all four speaking goals. Great work!":"Challenge completed! You checked "+checked+" of 4 goals. Review the others and try again whenever you are ready.";
+  f.className="feedback good";
+ });
+
+ renderTopic(topicSelect.value);
+ renderLive();
+})();
+</script>
+</body>
+</html>
